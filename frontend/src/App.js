@@ -1,28 +1,21 @@
-import React, {useEffect, useState} from 'react';
-import logo from './logo.svg';
-import './App.css';
+// App.js
+
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import LoginPage from './pages/LoginPage';
+import Home from './pages/Home';
+
 
 function App() {
-
-  const [entitiesList, setEntitiesList] = useState([]);
-
-  let list = 'data is loading';
-
-  useEffect(() => {
-    fetch('/api/demo/')
-       .then(response => response.json())
-       .then(data => { setEntitiesList(data);});
-  }, []);
-
-
-  list = entitiesList.map( i => (<div>{i.id}: {i.name}</div>));
-
-  return (
-    <div className="App">
-      <h1>The content of the Services endpoint:</h1>
-      { list }
-    </div>
-  );
+    return (
+        <Router>
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/appointment" element={<Home />} />
+            </Routes>
+        </Router>
+    );
 }
 
 export default App;

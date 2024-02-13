@@ -1,0 +1,41 @@
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.hero {
+    background-size: cover;
+    background-position: center;
+    padding: 2rem;
+    text-align: center;
+    color: #fff;
+}
+
+h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+p {
+    font-size: 1.5rem;
+    line-height: 1.5;
+    margin-bottom: 2rem;
+}
+
+button {
+    background-color: #fff;
+    color: #4344c5;
+    padding: 0.5rem 1rem;
+    margin-top: 1rem;
+}
+
+.success {
+    background-color: #00ff51;
+    padding: 1rem;
+    margin: 1rem;
+}
+
+h2 {
+    font-size: 1.5rem;
+}
