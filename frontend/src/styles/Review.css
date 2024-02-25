@@ -1,0 +1,49 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+}
+
+.reviews {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.review {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    background-color: #f4f4f4;
+}
+
+.review__name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.review__text {
+    font-size: 1rem;
+    color: #444;
+}
+
+.review__rating {
+    font-size: 1rem;
+    color: #888;
+}
+
+.review__rating::before {
+    content: "Rating: ";
+    font-weight: bold;
+}
+
+.review__rating::after {
+    content: "/5";
+    font-weight: normal;
+}

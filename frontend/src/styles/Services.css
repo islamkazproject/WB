@@ -1,0 +1,64 @@
+.serv_container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.card {
+    width: 200px;
+    height: 350px;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fff;
+    color: #000; /* Черный цвет текста */
+    border-radius: 10px;
+    overflow: hidden;
+    transition: all 0.3s;
+    /* Убираем тень по умолчанию */
+    box-shadow: none;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    /* Добавляем тень при наведении */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card img {
+    width: 100%;
+    height: 200px; /* Фиксированная высота изображения */
+    object-fit: cover;
+    cursor: pointer;
+}
+
+.card-body {
+    padding: 10px;
+    text-align: center;
+}
+
+.service-name {
+    text-transform: uppercase;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.service-description {
+    font-size: 14px;
+    color: #555;
+}
+
+h2 {
+    text-align: center;
+    align-self: center;
+    font-size: 3rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.service_btn {
+    background-color: white;
+}

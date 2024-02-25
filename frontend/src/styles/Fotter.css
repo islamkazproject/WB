@@ -1,0 +1,77 @@
+.bg-gray-100 {
+    background-color: #f4f7f6; /* Симен цвет фона */
+    color: #333; /* Цвет текста */
+}
+
+.text-primary {
+    color: #007bff; /* Синий цвет */
+}
+
+.text-primary:hover {
+    color: #0056b3; /* Изменение цвета текста при наведении */
+}
+
+.bg-simen {
+    background-color: #007bff; /* Изменение цвета фона в синий */
+}
+
+.btn-link {
+    display: inline-block;
+    background-color: #0056b3; /* Обновление цвета кнопки в темно-синий */
+    color: #fff; /* Цвет текста кнопки */
+    padding: 8px 16px;
+    margin-right: 8px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.btn-link:hover {
+    background-color: #007bff; /* Изменение цвета кнопки в синий при наведении */
+}
+
+
+.footer_container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.text-justify {
+    text-align: justify;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.font-Poppins {
+    font-family: 'Poppins', sans-serif;
+}
+
+.py-16 {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+}
+
+.py-4 {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+.flex {
+    display: flex;
+    align-items: center;
+}
+
+.ml-2 {
+    margin-left: 0.5rem;
+}
+
+.py-0 {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.hover\:text-primary:hover {
+    color: #007bff; /* Изменение цвета текста при наведении */
+}
