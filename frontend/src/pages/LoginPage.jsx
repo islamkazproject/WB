@@ -1,10 +1,9 @@
-// LoginPage.jsx
-
+import "../styles/Login.css"
 import React from 'react';
 
 const LoginPage = () => {
     return (
-        <div>
+        <div className="wrapper">
             <h1>Login Page</h1>
             <form>
                 <label>Email:</label>

@@ -122,7 +122,7 @@ h1 {
 .calendar {
     font-family: 'IBM Plex Sans', sans-serif;
     position: relative;
-    max-width: 200px; /*change as per your design need */
+    max-width: 300px; /*change as per your design need */
     min-width: 800px;
     background: var(--calendar-bg-color);
     color: var(--calendar-font-color);
@@ -264,7 +264,7 @@ h1 {
     padding: 10px;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
     border-radius: 10px;
-    max-width: 1000px;
+    max-width: 1100px;
     margin: 0 auto;
 }
 .doctor-info {

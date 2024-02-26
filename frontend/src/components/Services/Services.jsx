@@ -2,6 +2,7 @@ import React from "react";
 import implantImage from '../../images/Implant.jpeg';
 import parandrozImage from '../../images/parandroz.jpeg';
 import "../../styles/Services.css";
+import {Link} from "react-router-dom";
 
 
 const Services = () => {
@@ -24,11 +25,13 @@ const Services = () => {
             <div className="serv_container grid lg:grid-cols-3 grid-cols-1 gap-6 text-white mt-12">
                 {services.map((service) => (
                     <div key={service.id} className="card hover:shadow-md transition-all">
-                        <button className="service_btn">
+                        <Link to="/make">
+                        <button>
                             <img src={service.image} alt={service.name}/>
                             <div className="card-body p-4 flex flex-col justify-between">
                                 <h3 className="service-name mt-2" style={{color: '#000'}}>{service.name}</h3></div>
                         </button>
+                        </Link>
                     </div>
                 ))}
             </div>

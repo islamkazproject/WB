@@ -12,7 +12,7 @@ const Banner = () => {
                     <br />
                     Get matched with a great dentist today. Seriously, it’s time.
                 </p>
-                <Link to="/appointment" className="button">
+                <Link to="/make" className="button">
                     Make an Appointment
                 </Link>
             </div>

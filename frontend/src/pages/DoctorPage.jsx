@@ -1,6 +1,6 @@
 import "../styles/DoctorPage.css"
-import "./calendar"
-
+import Footer from "../components/Footer/Footer";
+import React from "react";
 const DoctorPage = () => {
     return (
         <div>
