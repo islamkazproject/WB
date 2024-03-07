@@ -37,7 +37,13 @@ p {
 
     &:hover {
         background-color: transparent;
-        color: #0073b7;
-        border: 1px solid #0073b7;
+    }
+}
+.icon_button{
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.3s;
+    &:hover {
+        background-color: #0073b7;
     }
 }
