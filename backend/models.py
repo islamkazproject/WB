@@ -1,8 +1,11 @@
+from django.core.validators import FileExtensionValidator
 from django.utils import timezone
 
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+
+from backend.utils import get_path_upload_image, validate_size_image
 
 
 class Service(models.Model):
@@ -16,17 +19,29 @@ class Service(models.Model):
 
 
 class UserProfile(models.Model):
+    ROLE_CHOICES = [
+        ('patient', 'Patient'),
+        ('registrar', 'Registrar'),
+        ('doctor', 'Doctor'),
+        ('admin', 'Administrator'),
+    ]
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name="user")
-    image = models.ImageField(upload_to='frontend/src/images/users', blank=True)
-    user_patronymic = models.CharField(max_length=60, blank=True)
+    user_patronymic = models.CharField(max_length=60, blank=True, null=True)
     user_birth_date = models.DateField(null=True, blank=True)
+    user_image = models.ImageField(
+        upload_to=get_path_upload_image,
+        blank=True,
+        null=True,
+        validators=[FileExtensionValidator(allowed_extensions=['jpg']), validate_size_image]
+    )
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='patient')
 
     @property
     def is_authenticated(self):
         return True
 
     def __str__(self):
-        return self.user
+        return f'{self.user} {self.role}'
 
 
 class Review(models.Model):
@@ -46,7 +61,7 @@ class Review(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.user + " - " + self.text + " - " + str(self.rating)
+        return f"{self.user} - {self.text} - {str(self.rating)}"
 
 
 class Schedule(models.Model):
@@ -65,7 +80,7 @@ class Schedule(models.Model):
         _17_00 = 1700, _('17:00 - 18:00')
         _18_00 = 1800, _('18:00 - 19:00')
 
-    doctor = models.ForeignKey(User, on_delete=models.CASCADE)
+    doctor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='doctors')
     date = models.DateField(default=timezone.now)
     time_slot = models.IntegerField(choices=TimeSlots, verbose_name='time_slot')
     is_available = models.BooleanField(default=True)
@@ -81,7 +96,7 @@ class Appointment(models.Model):
         CANCELLED = 'C', _('ОТМЕНЕНО')
         DONE = 'D', _('ВЫПОЛНЕНО')
 
-    appointment_patient = models.ForeignKey(User, on_delete=models.CASCADE)
+    appointment_patient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='patients')
     appointment_created_timestamp = models.DateTimeField(auto_now_add=True)
     appointment_service = models.ForeignKey(Service, on_delete=models.CASCADE)
     appointment_description = models.TextField(max_length=3000, verbose_name='Description')
@@ -93,8 +108,7 @@ class Appointment(models.Model):
     )
 
     def __str__(self):
-        return self.appointment_patient + " - " \
-            + self.appointment_service + " - " \
-            + self.appointment_schedule + " - " \
-            + str(self.appointment_status)
-
+        return f"{self.appointment_patient} - \
+            {self.appointment_service} - \
+            {self.appointment_schedule} - \
+            {str(self.appointment_status)}"
