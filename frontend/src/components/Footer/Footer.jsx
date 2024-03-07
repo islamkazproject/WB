@@ -17,10 +17,10 @@ const Footer = () => {
                 <div className="w-1/3 lg:py-0 py-8">
                     <h1 className="text-2xl font-Poppins">Quick Links</h1>
                     <div className="py-4 flex">
-                        <Link to="/" className="btn-link">Home</Link>
-                        <Link to="/about" className="btn-link">About Us</Link>
-                        <Link to="/services" className="btn-link">Services</Link>
-                        <Link to="/contact" className="btn-link">Contact Us</Link>
+                        <Link to="/api/v1/" className="btn-link">Home</Link>
+                        <a href="#section2 " className="btn-link">About Us</a>
+                        <a href="#section1 " className="btn-link">Services</a>
+                        <a href="#section3 " className="btn-link">Make appointment</a>
                     </div>
                 </div>
             </div>

@@ -10,7 +10,7 @@ const Feature = () => {
                             <i className="fas fa-teeth-open text-6xl py-6 px-4"></i>
                         </div>
                         <div>
-                            <h1 className="text-md pb-2 uppercase font-bold leading-snug text-white hover:opacity-75">
+                            <h1 className="text-md pb-2 uppercase font-bold leading-snug text-white hover:opacity-75" id="section2">
                                 Dental Implants
                             </h1>
                             <p>

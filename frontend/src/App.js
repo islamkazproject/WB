@@ -7,19 +7,22 @@ import Home from './pages/Home';
 import DoctorPage from "./pages/DoctorPage";
 import RegistrationForm from "./pages/RegistrationForm";
 import Appointment from "./pages/appointment";
+import ProfilePage from "./pages/ProfilePage";
+
 
 
 function App() {
+    const url = "api/v1";
     return (
         <Router>
             <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/appointment" element={<Home />} />
-                <Route path="/doctor" element={<DoctorPage />} />
-                <Route path="/registration" element={<RegistrationForm />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/make" element={<Appointment />} />
+                <Route path={`${url}/`} element={<Home />} />
+                <Route path={`${url}/login`} element={<LoginPage />} />
+                <Route path={`${url}/appointment`} element={<Home />} />
+                <Route path={`${url}/doctor`} element={<DoctorPage />} />
+                <Route path={`${url}/registration`} element={<RegistrationForm />} />
+                <Route path={`${url}/service`} element={<Appointment />} />
+                <Route path={`${url}/profile`} element={<ProfilePage />} />
 
             </Routes>
         </Router>
