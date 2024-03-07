@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Service, Review, Schedule
+from .models import Service, Review, Schedule, UserProfile, Appointment
 
 
 class ServicesSerializer(serializers.ModelSerializer):
@@ -19,4 +19,16 @@ class ReviewsSerializer(serializers.ModelSerializer):
 class SchedulesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Schedule
+        fields = "__all__"
+
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = "__all__"
+
+
+class AppointmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Appointment
         fields = "__all__"
