@@ -1,6 +1,7 @@
 import React from 'react';
 import '../styles/Registration.css';
 import Banner from "../components/banner/Banner";
+import Footer from "../components/Footer/Footer";
 
 const RegistrationForm = () => {
     return (
@@ -24,7 +25,7 @@ const RegistrationForm = () => {
                     <input type="submit" value="Register Now" className="custom-button"/>
                 </div>
                 <div className="text">
-                    <h3>Already have an account? <a href="/login">Login now</a></h3>
+                    <h3>Already have an account? <a href="/api/v1/login">Login now</a></h3>
                 </div>
             </form>
         </div>

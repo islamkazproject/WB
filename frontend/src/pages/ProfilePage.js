@@ -1,8 +1,10 @@
 import React from "react";
+import {Link} from "react-router-dom";
 
 const handleLogout = () => {
     // Добавьте логику для выхода из аккаунта
     alert("Successfully logged out!");
+
 };
 const ProfilePage = () => {
     const user = {
@@ -24,6 +26,7 @@ const ProfilePage = () => {
                 <h1>{user.username}'s Profile</h1>
                 <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
                      alt="Profile Picture" style={{borderRadius: "50%", width: "150px", height: "150px"}}/>
+                <Link to={"/api/v1/"}>
                 <button onClick={handleLogout} style={{
                     padding: "10px 20px",
                     backgroundColor: "#dc3545",
@@ -34,6 +37,7 @@ const ProfilePage = () => {
                     marginTop: "20px"
                 }}>Logout
                 </button>
+                </Link>
                 <br/><br/>
 
                 <p>Email: {user.email}</p>
