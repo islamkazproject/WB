@@ -12,14 +12,13 @@ router = routers.DefaultRouter()
 router.register(r'services', ServiceViewSet)
 router.register(r'reviews', ReviewViewSet)
 router.register(r'schedules', ScheduleViewSet)
-router.register(r'profiles', UserProfileViewSet)
-router.register(r'appointments', AppointmentViewSet)
+router.register(r'profiles', UserProfileViewSet, basename='profile')
+router.register(r'appointments', AppointmentViewSet, basename='appointment')
 
 urlpatterns = [
     path('api/v1/', include(router.urls)),
     path('api/v1/auth/', include('djoser.urls')),
     re_path('api/v1/auth/', include('djoser.urls.authtoken')),
-    path('api/v1/auth/', include('djoser.urls.jwt')),
 ]
 
 urlpatterns += doc_url
