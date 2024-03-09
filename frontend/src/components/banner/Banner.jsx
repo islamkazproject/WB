@@ -12,6 +12,7 @@ const Banner = () => {
                     <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
                          alt="Profile Picture" style={{borderRadius: "50%", width: "80px", height: "80px",border: "10px"}}/>
                 </Link>
+                <a href="/api/v1/login"> Log in </a>//в будущем вместо фотки
                 <h1 id="section3">Eat wisely, smile nicely</h1>
                 <p>
                     Relax, this is going to be so easy. The smart way to find a dentist.
