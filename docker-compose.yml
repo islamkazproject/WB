@@ -25,11 +25,14 @@ services:
     volumes:
       - ./static:/wb/static
       - ./media:/wb/media
+      - backend_volume:/wb
+
 
     command: >
-      bash -c "source /home/adminuser/.venv/bin/activate && ./manage.py collectstatic --noinput && ./manage.py migrate && gunicorn -b 0.0.0.0:8000 react_django.wsgi:application"
+      bash -c "source /home/adminuser/.venv/bin/activate && ./manage.py collectstatic --noinput && ./manage.py makemigrations && ./manage.py migrate && gunicorn -b 0.0.0.0:8000 react_django.wsgi:application"
 
 volumes:
+  backend_volume:
   postgres_data:
   static:
   media:

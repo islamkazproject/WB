@@ -14,7 +14,7 @@ repository = "https://github.com/islamkazproject/WhiteBeauty"
 [tool.poetry.dependencies]
 python = ">=3.11"
 djangorestframework = ">=3.14.0"
-pillow = "^10.2.0"
+pillow = "9.5.0"
 django = "^5.0.2"
 drf-yasg = "^1.21.7"
 requests = "^2.31.0"

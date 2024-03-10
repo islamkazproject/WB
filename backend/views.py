@@ -1,4 +1,4 @@
-from rest_framework.permissions import IsAdminUser, AllowAny
+from rest_framework.permissions import AllowAny
 
 from .models import (
     Service,
@@ -6,11 +6,6 @@ from .models import (
     Schedule,
     UserProfile,
     Appointment,
-)
-from .permissions import (
-    IsRegistrar,
-    IsPatient,
-    IsDoctor,
 )
 from .serializers import (
     ServicesSerializer,
@@ -25,26 +20,18 @@ from rest_framework import viewsets
 class ServiceViewSet(viewsets.ModelViewSet):
     queryset = Service.objects.all()
     serializer_class = ServicesSerializer
-    permission_classes = [IsPatient, IsAdminUser, AllowAny]
-
-    # def get_permissions(self):
-    #     if self.action == 'get' or self.action == 'retrieve':
-    #         permission_classes = [IsPatient]
-    #     else:
-    #         permission_classes = [IsRegistrar]
-    #     return [permission() for permission in permission_classes]
-
+    permission_classes = [AllowAny]
 
 class ReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.all()
     serializer_class = ReviewsSerializer
-    permission_classes = [IsPatient, IsAdminUser, AllowAny]
+    permission_classes = [AllowAny]
 
 
 class ScheduleViewSet(viewsets.ModelViewSet):
     queryset = Schedule.objects.all()
     serializer_class = SchedulesSerializer
-    permission_classes = [IsRegistrar, IsAdminUser, IsDoctor, AllowAny]
+    permission_classes = [AllowAny]
 
 
 class UserProfileViewSet(viewsets.ModelViewSet):
@@ -52,46 +39,11 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     serializer_class = UserProfileSerializer
     permission_classes = [AllowAny]
 
-    # def get_permissions(self):
-    #     if self.action == 'get' or self.action == 'retrieve' and self.action == 'put' or self.action == 'update':
-    #         permission_classes = [IsPatient, IsRegistrar, IsAdminUser]
-    #     else:
-    #         permission_classes = [IsRegistrar, IsAdminUser, IsDoctor]
-    #     return [permission() for permission in permission_classes]
-    #
-    # def get_queryset(self):
-    #     if self.request.user.is_authenticated:
-    #         if self.request.user.userprofile.role == 'patient':
-    #             return Appointment.objects.filter(patient=self.request.user)
-    #         elif self.request.user.userprofile.role == 'doctor':
-    #             return Appointment.objects.filter(doctor=self.request.user)
-    #         elif self.request.user.userprofile.role == 'registrar':
-    #             return Appointment.objects.all()
-    #         elif self.request.user.userprofile.role == 'administrator':
-    #             return Appointment.objects.all()
-    #     return Appointment.objects.none()
 
 
 class AppointmentViewSet(viewsets.ModelViewSet):
     queryset = Appointment.objects.all()
     serializer_class = AppointmentSerializer
-    permission_classes = [IsPatient, IsAdminUser, AllowAny]
+    permission_classes = [AllowAny]
 
-    # def get_permissions(self):
-    #     if self.action == 'get' or self.action == 'retrieve':
-    #         permission_classes = [IsPatient]
-    #     else:
-    #         permission_classes = [IsRegistrar, IsAdminUser, IsDoctor]
-    #     return [permission() for permission in permission_classes]
-    #
-    # def get_queryset(self):
-    #     if self.request.user.is_authenticated:
-    #         if self.request.user.userprofile.role == 'patient':
-    #             return Appointment.objects.filter(patient=self.request.user)
-    #         elif self.request.user.userprofile.role == 'doctor':
-    #             return Appointment.objects.filter(doctor=self.request.user)
-    #         elif self.request.user.userprofile.role == 'registrar':
-    #             return Appointment.objects.all()
-    #         elif self.request.user.userprofile.role == 'administrator':
-    #             return Appointment.objects.all()
-    #     return Appointment.objects.none()
+
