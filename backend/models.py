@@ -11,7 +11,7 @@ from backend.utils import get_path_upload_image, validate_size_image
 class Service(models.Model):
     service_name = models.CharField(max_length=100)
     service_description = models.TextField()
-    service_image = models.ImageField(upload_to='frontend/src/images/services', blank=True)
+    service_image = models.ImageField(upload_to='services', blank=True)
     service_price = models.DecimalField(default=0, max_digits=10, decimal_places=2)
 
     def __str__(self):
@@ -86,7 +86,7 @@ class Schedule(models.Model):
     is_available = models.BooleanField(default=True)
 
     def __str__(self):
-        return f"{self.doctor} - {self.time_slot}"  # Use f-string for clear formatting
+        return f"{self.doctor} - {self.time_slot}"
 
 
 class Appointment(models.Model):
