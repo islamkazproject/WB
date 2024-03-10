@@ -2,7 +2,7 @@ from rest_framework.exceptions import ValidationError
 
 
 def get_path_upload_image(instance, file):
-    return f'frontend/src/images/{instance.user}/{file}'
+    return f'{instance.user}/{file}'
 
 
 def validate_size_image(file_obj):
