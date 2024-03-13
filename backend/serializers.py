@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from rest_framework import serializers
 from .models import Service, Review, Schedule, UserProfile, Appointment
 
@@ -5,7 +6,7 @@ from .models import Service, Review, Schedule, UserProfile, Appointment
 class ServicesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Service
-        fields = ('id', 'service_name', 'service_description', 'service_image', 'service_price')
+        fields = "__all__"
 
 
 class ReviewsSerializer(serializers.ModelSerializer):
@@ -29,6 +30,14 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 
 class AppointmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Appointment
+        fields = "__all__"
+
+
+class AppointmentHistorySerializer(serializers.ModelSerializer):
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+
     class Meta:
         model = Appointment
         fields = "__all__"

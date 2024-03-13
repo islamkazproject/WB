@@ -1,11 +1,8 @@
-from django.core.validators import FileExtensionValidator
 from django.utils import timezone
 
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
-from backend.utils import get_path_upload_image, validate_size_image
 
 
 class Service(models.Model):
@@ -15,7 +12,7 @@ class Service(models.Model):
     service_price = models.DecimalField(default=0, max_digits=10, decimal_places=2)
 
     def __str__(self):
-        return self.service_name
+        return f'{self.service_name}: {self.service_price} рублей'
 
 
 class UserProfile(models.Model):
@@ -28,12 +25,6 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name="user")
     user_patronymic = models.CharField(max_length=60, blank=True, null=True)
     user_birth_date = models.DateField(null=True, blank=True)
-    user_image = models.ImageField(
-        upload_to=get_path_upload_image,
-        blank=True,
-        null=True,
-        validators=[FileExtensionValidator(allowed_extensions=['jpg']), validate_size_image]
-    )
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='patient')
 
     @property
@@ -61,7 +52,7 @@ class Review(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user} - {self.text} - {str(self.rating)}"
+        return f"{self.user} - {str(self.rating)}"
 
 
 class Schedule(models.Model):
@@ -82,11 +73,11 @@ class Schedule(models.Model):
 
     doctor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='doctors')
     date = models.DateField(default=timezone.now)
-    time_slot = models.IntegerField(choices=TimeSlots, verbose_name='time_slot')
+    time_slot = models.IntegerField(choices=TimeSlots.choices, verbose_name='time_slot')
     is_available = models.BooleanField(default=True)
 
     def __str__(self):
-        return f"{self.doctor} - {self.time_slot}"
+        return f"{self.doctor} - {self.date} - {self.time_slot}"
 
 
 class Appointment(models.Model):

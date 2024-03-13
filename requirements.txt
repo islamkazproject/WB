@@ -9,12 +9,15 @@ defusedxml==0.7.1
 delocate==0.10.7
 Django==5.0.2
 django-cors-headers==4.3.1
+django-devserver==0.8.0
+django-filter==24.1
 django-templated-mail==1.1.1
 djangorestframework==3.14.0
 djangorestframework-simplejwt==5.3.1
 djoser==2.2.2
 drf-yasg==1.21.7
 flake8==4.0.1
+gunicorn==21.2.0
 idna==3.6
 inflection==0.5.1
 iniconfig==2.0.0
@@ -34,6 +37,7 @@ psycopg2-binary==2.9.9
 pycodestyle==2.8.0
 pycparser==2.21
 pyflakes==2.4.0
+PyHamcrest==2.1.0
 PyJWT==2.8.0
 pytest==7.4.4
 pytest-django==4.8.0
