@@ -16,16 +16,16 @@ class Service(models.Model):
 
 
 class UserProfile(models.Model):
-    ROLE_CHOICES = [
-        ('patient', 'Patient'),
-        ('registrar', 'Registrar'),
-        ('doctor', 'Doctor'),
-        ('admin', 'Administrator'),
-    ]
-    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name="user")
+    class UserRoleChoices(models.TextChoices):
+        PATIENT = 'patient'
+        REGISTRAR = 'registrar'
+        DOCTOR = 'doctor'
+        ADMIN = 'admin'
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name="user", related_name="user")
     user_patronymic = models.CharField(max_length=60, blank=True, null=True)
     user_birth_date = models.DateField(null=True, blank=True)
-    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='patient')
+    role = models.CharField(max_length=20, choices=UserRoleChoices, default=UserRoleChoices.PATIENT)
 
     @property
     def is_authenticated(self):

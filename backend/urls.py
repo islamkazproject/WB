@@ -6,6 +6,7 @@ from backend.views import (
     UserProfileViewSet,
     AppointmentViewSet,
     AppointmentHistoryViewSet,
+    DoctorViewSet,
 )
 from rest_framework import routers
 from react_django.yasg import urlpatterns as doc_url
@@ -15,6 +16,7 @@ router.register(r'services', ServiceViewSet)
 router.register(r'reviews', ReviewViewSet)
 router.register(r'schedules', ScheduleView)
 router.register(r'profiles', UserProfileViewSet, basename='profile')
+router.register(r'doctors', DoctorViewSet, basename='doctor-list')
 router.register(r'appointments', AppointmentViewSet, basename='appointment')
 router.register(r'^appointments/history/(?P<user_id>\d+)', AppointmentHistoryViewSet, basename='appointment-history')
 

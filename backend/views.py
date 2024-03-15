@@ -1,3 +1,4 @@
+from rest_framework.filters import SearchFilter
 from rest_framework.permissions import (
     IsAuthenticated,
     IsAuthenticatedOrReadOnly,
@@ -16,7 +17,8 @@ from .serializers import (
     SchedulesSerializer,
     UserProfileSerializer,
     AppointmentSerializer,
-    AppointmentHistorySerializer
+    AppointmentHistorySerializer,
+    DoctorSerializer
 )
 from rest_framework import viewsets
 
@@ -48,6 +50,14 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
 
+class DoctorViewSet(viewsets.ModelViewSet):
+    queryset = UserProfile.objects.filter(role=UserProfile.UserRoleChoices.DOCTOR)
+    serializer_class = DoctorSerializer
+    permission_classes = [IsAuthenticated]
+    filter_backends = [SearchFilter]
+    search_fields = ['user__username', 'user__first_name', 'user__last_name']
+
+
 class AppointmentViewSet(viewsets.ModelViewSet):
     queryset = Appointment.objects.all()
     serializer_class = AppointmentSerializer
@@ -62,4 +72,3 @@ class AppointmentHistoryViewSet(viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):
         queryset = Appointment.objects.filter(appointment_status=Appointment.StatusEnum.DONE)
         return queryset
-

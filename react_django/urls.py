@@ -4,6 +4,7 @@ from react_django import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
+    path("__debug__/", include("debug_toolbar.urls")),
     path('admin/', admin.site.urls),
     path('api/v1/', include('backend.urls')),
     path('api-auth/', include('rest_framework.urls'))
