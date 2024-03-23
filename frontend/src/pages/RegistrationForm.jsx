@@ -13,7 +13,10 @@ const RegistrationForm = () => {
                     <input type="text" placeholder="Enter your name" required/>
                 </div>
                 <div className="input-box">
-                    <input type="text" placeholder="Enter your email" required/>
+                    <input type="date" placeholder="Enter birght day" required/>
+                </div>
+                <div className="input-box">
+                    <input type="email" placeholder="Enter your email" required/>
                 </div>
                 <div className="input-box">
                     <input type="password" placeholder="Create password" required/>

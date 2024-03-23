@@ -35,6 +35,13 @@ input {
     border-radius: 3px;
 }
 
+select{
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
 button {
     width: 100%;
     padding: 10px;

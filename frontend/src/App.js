@@ -8,6 +8,7 @@ import DoctorPage from "./pages/DoctorPage";
 import RegistrationForm from "./pages/RegistrationForm";
 import Appointment from "./pages/appointment";
 import ProfilePage from "./pages/ProfilePage";
+import Registrator from "./pages/Registrator";
 
 
 
@@ -20,10 +21,10 @@ function App() {
                 <Route path={`${url}/login`} element={<LoginPage />} />
                 <Route path={`${url}/appointment`} element={<Home />} />
                 <Route path={`${url}/doctor`} element={<DoctorPage />} />
-                <Route path={`${url}/registration`} element={<RegistrationForm />} />
+                <Route path={`${url}/sing_in`} element={<RegistrationForm />} />
                 <Route path={`${url}/service`} element={<Appointment />} />
                 <Route path={`${url}/profile`} element={<ProfilePage />} />
-
+                <Route path={`${url}/registration`} element={<Registrator />} />
             </Routes>
         </Router>
     );
