@@ -1,7 +1,8 @@
 from django.contrib.auth.models import User
 from djoser.serializers import UserSerializer
 from rest_framework import serializers
-from .models import Service, Review, Schedule, UserProfile, Appointment
+
+from .models import Appointment, Review, Schedule, Service, UserProfile
 
 
 class ServicesSerializer(serializers.ModelSerializer):
@@ -24,6 +25,17 @@ class SchedulesSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class SchedulesDoctorSerializer(serializers.ModelSerializer):
+    doctor_name = serializers.CharField(source="doctor.username", read_only=True)
+    time_slot_str = serializers.CharField(
+        source="get_time_slot_display", read_only=True
+    )
+
+    class Meta:
+        model = Schedule
+        fields = ("id", "doctor_name", "date", "time_slot_str", "is_available")
+
+
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
@@ -32,11 +44,11 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 class DoctorSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
-    user_details = UserSerializer(source='user', read_only=True)
+    user_details = UserSerializer(source="user", read_only=True)
 
     class Meta:
         model = UserProfile
-        fields = ['id', 'user', 'user_details', 'user_patronymic', 'user_birth_date']
+        fields = ["id", "user", "user_details", "user_patronymic", "user_birth_date"]
 
 
 class AppointmentSerializer(serializers.ModelSerializer):
@@ -51,3 +63,24 @@ class AppointmentHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Appointment
         fields = "__all__"
+
+
+class AppointmentHistoryDoctorSerializer(serializers.ModelSerializer):
+    appointment_schedule = serializers.PrimaryKeyRelatedField(
+        queryset=Schedule.objects.all()
+    )
+    schedule_details = SchedulesSerializer(
+        source="appointment_schedule", read_only=True
+    )
+
+    class Meta:
+        model = Appointment
+        fields = [
+            "id",
+            "appointment_patient",
+            "appointment_schedule",
+            "schedule_details",
+            "appointment_service",
+            "appointment_description",
+            "appointment_status",
+        ]
