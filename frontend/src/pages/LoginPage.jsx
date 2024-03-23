@@ -107,7 +107,7 @@ const LoginPage = () => {
             </form>
             <br/><br/>
             <div className="register-link">
-                <p>Don't have an account? <a href="/api/v1/sign_in">Register here</a></p>
+                <p>Don't have an account? <a href="/api/v1/sing_in">Register here</a></p>
             </div>
         </div>
     );

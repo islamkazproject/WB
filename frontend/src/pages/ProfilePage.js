@@ -87,18 +87,17 @@ const ProfilePage = () => {
                 <p>Patronymic: {userInfo.desiredUser.user_patronymic}</p>
                 <p>Date: {userInfo.desiredUser.user_birth_date}</p>
             </div>
-            <div style={{ flex: 1, paddingLeft: "20px" }}>
+            <div style={{ flex: 1, paddingLeft: "10px" }}>
                 <p>History of appointments:</p>
                 {appointmentHistory.map((appointment, index) => {
                     const serviceData = servicesData[appointment.appointment_service] || {};
                     const dateData = datesData[appointment.appointment_schedule] || {};
 
                     return (
-                        <div key={index} style={{ marginBottom: "10px", backgroundColor: "#b3b9b9", padding: "20px", borderRadius: "10px" }}>
+                        <div key={index} style={{ marginBottom: "5px", backgroundColor: "#b3b9b9", padding: "10px", borderRadius: "10px" }}>
                             <p><strong>Service:</strong> {serviceData.service_name}</p>
                             <p><strong>Date:</strong> {dateData.date}</p>
                             <p><strong>Time:</strong> {dateData.time_slot}</p>
-                            {/* Другие данные записи */}
                         </div>
                     );
                 })}
