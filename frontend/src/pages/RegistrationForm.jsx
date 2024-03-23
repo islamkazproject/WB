@@ -76,15 +76,9 @@ const RegistrationForm = () => {
 
         } catch (error) {
             if (error.response && error.response.data) {
-                const { data } = error.response;
-                console.error('Error details:', data);
-
-                if (data.username) {
-                    const usernameError = data.username[0];
-                    console.log('Username error:', usernameError);
-                }
+                alert('Error details: ' + JSON.stringify(error.response.data));
             } else {
-                console.error('An unexpected error occurred:', error);
+                alert('An unexpected error occurred: ' + error.message);
             }
         }
     };
