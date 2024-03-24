@@ -1,25 +1,30 @@
 from rest_framework import permissions
 
+from backend.models import UserProfile
+
 
 class IsRegistrar(permissions.BasePermission):
-    def has_permission(self, request, view):
-        return request.user.is_authenticated and request.user.userprofile.role == 'registrar' \
-            if hasattr(request.user, 'userprofile') else False
+    """
+    Разрешает доступ авторизованным пользователям и пользователю с ролью регистратор.
+    """
 
-    def has_object_permission(self, request, view, obj):
-        return request.user.is_authenticated and request.user.userprofile.role == 'registrar' \
-            if hasattr(request.user, 'userprofile') else False
+    def has_permission(self, request, view):
+        return (
+            request.user.is_authenticated
+            and request.user.profile.role == UserProfile.UserRoleChoices.REGISTRAR
+        )
 
 
 class IsDoctor(permissions.BasePermission):
-    def has_permission(self, request, view):
-        return request.user.is_authenticated and request.user.userprofile.role == 'doctor' \
-            if hasattr(request.user, 'userprofile') else False
+    """
+    Разрешает доступ авторизованным пользователям и пользователю с ролью доктор.
+    """
 
-    def has_object_permission(self, request, view, obj):
-        if request.method in permissions.SAFE_METHODS:
-            return True
-        return obj.author == request.user
+    def has_permission(self, request, view):
+        return (
+            request.user.is_authenticated
+            and request.user.profile.role == UserProfile.UserRoleChoices.DOCTOR
+        )
 
 
 class IsAdminOrIsAuthenticatedReadOnly(permissions.BasePermission):
