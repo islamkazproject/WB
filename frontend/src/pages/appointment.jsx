@@ -26,44 +26,23 @@ const Appointment = () => {
 
     const fetchDoctors = async (serviceId) => {
         try {
-            const doctorsResponse = await axios.get(`http://0.0.0.0:8080/api/v1/profiles/`, {
+            const doctorsResponse = await axios.get(`http://localhost:8080/api/v1/doctors/`, {
                 headers: {
                     'Authorization': `Token ${localStorage.getItem('token')}`
                 }
             });
+            setDoctors(doctorsResponse.data);
+            console.log("doctors = " + (doctorsResponse.data[0]));
 
-            const doctorsOnly = doctorsResponse.data.filter(profile => profile.role === 'doctor');
-            setDoctors(doctorsOnly);
-            //console.log("doctors = " + JSON.stringify(doctorsOnly));
-
-            const userDataArray = doctorsResponse.data.map(async (doctor) => {
-                //console.log('userId from doctor' + doctor.user);
+            const dataArray = doctorsResponse.data.map(async (doctor) => {
                 try {
-                    const userResponse = await axios.get(`http://0.0.0.0:8080/api/v1/auth/users/${doctor.user}`, {
+                    const datesResponse = await axios.get(`http://0.0.0.0:8080/api/v1/schedules/doctors/${doctor.user}`, {
                         headers: {
                             'Authorization': `Token ${localStorage.getItem('token')}`
                         }
                     });
-                    //console.log('user from doctor' + userResponse.data);
 
-                    return userResponse.data;
-                } catch (error) {
-                    console.error('Error fetching user data:', error);
-                    return null;
-                }
-            });
-
-            const userData = await Promise.all(userDataArray);
-            setUsers(userData);
-
-
-            const dataArray = doctorsResponse.data.map(async (doctor) => {
-                try {
-                    const datesResponse = await axios.get(`http://0.0.0.0:8080/api/v1/schedules/${doctor.id}`, {
-                        headers: {
-                            'Authorization': `Token ${localStorage.getItem('token')}`
-                        }});
-
+                    console.log("doctor id = "+ doctor.user)
                     return datesResponse.data;
                 } catch (error) {
                     console.error('Error fetching user data:', error);
@@ -71,8 +50,12 @@ const Appointment = () => {
                 }
             });
 
-            const dateData = await Promise.all(dataArray);
-            setDates(dateData);
+            console.log("dates = "+ JSON.stringify(dataArray))
+
+            Promise.all(dataArray).then((resolvedDates) => {
+                const actualDates = resolvedDates.reduce((acc, dates) => acc.concat(dates), []);
+                setDates(actualDates);
+            });
 
         } catch (error) {
             console.error('Error fetching doctors:', error);
@@ -91,8 +74,9 @@ const Appointment = () => {
         try {
             const servicesResponse = await axios.get('http://0.0.0.0:8080/api/v1/services/');
             setServices(servicesResponse.data);
-            setIsLoading(false);
-            setSelectedService(services[0].id)
+            // setIsLoading(false);
+            console.log(servicesResponse.data[0]);
+            setSelectedService(servicesResponse.data[0].service_name); // обратитесь напрямую к servicesResponse.data
 
         } catch (error) {
             console.error('Error fetching services:', error);
@@ -140,15 +124,10 @@ const Appointment = () => {
         }
     };
 
-    const printFullName = (doctorId, doctorUserId) => {
-        //console.log(doctorId, doctorUserId);
-        const cpesialist = doctors.find(doctor => doctor.id === doctorId);
-        //console.log(cpesialist);
-
+    const printFullName = (doctorId) => {
         try {
-            const  user = users.find(user => user.id === doctorUserId);
-            //console.log('user data ====== ' + user);
-            return user.username + ' ' + cpesialist.user_patronymic;
+            const  user = doctors.find(user => user.id === doctorId);
+            return user.user_details.username + ' ' + user.user_patronymic;
         } catch (error) {
             console.error('Error fetching user data:', error);
             return '';
@@ -157,19 +136,18 @@ const Appointment = () => {
 
     const printDates = (doctorId) => {
         try {
-            const date =  dates.find(date => date.doctor === doctorId);
-            return  date.date;
+            const date = dates.find(date => date.id === doctorId); // Замените на поиск по свойству "doctor"
+            return date ? date.date : '';
         } catch (error) {
-            console.error('Error fetching user data:', error);
+            console.error('Error fetching dates:', error);
             return '';
         }
     };
+
     const printTimes = (doctorId) => {
-        //console.log('doctor id = ' + doctorId.split(" ")[1]);
         try {
-            const doctor = doctors.find(doctor => doctor.user_patronymic === doctorId.split(" ")[1])
-            const time = dates.find(date => date.doctor === doctor.id);
-            return time ? time.time_slot : '';
+            const date = dates.find(date => date.id === doctorId);
+            return date ? date.time_slot_str : '';
         } catch (error) {
             console.error('Error fetching time data:', error);
             return '';
@@ -217,20 +195,22 @@ const Appointment = () => {
                 <option value=""></option>
                 {doctors.map(doctor => (
                     <option key={doctor.id}
-                            value={printFullName(doctor.id, doctor.user).id}>{printFullName(doctor.id, doctor.user)}</option>
+                            value={printFullName(doctor.id).id}>{printFullName(doctor.id)}</option>
                 ))}
             </select><br/>
             <label htmlFor="select2">Выберите дату приемa:</label><br/>
             <select id="select2" value={selectedDate} onChange={(e) => handleDateChange(e.target.value)}>
                 <option value=""></option>
-                {doctors.map(doctor => (
-                    <option key={doctor.id} value={doctor.id}>{printDates(doctor.id)}</option>
+                {dates.map(date => (
+                    <option key={date.id} value={date.id}>{printDates(date.id)}</option>
                 ))}
             </select>><br/>
             <label htmlFor="select3">Выберите время приема:</label><br/>
             <select id="select3" value={selectedTime} onChange={(e) => setSelectedTime(e.target.value)}>
                 <option value=""></option>
-                <option value={printTimes(selectedDoctor)}>{printTimes(selectedDoctor)}</option>
+                {dates.map(date => (
+                    <option key={date.id} value={date.id}>{printTimes(date.id)}</option>
+                ))}
             </select><br/><br/>
             <form onSubmit={handleSubmit} id="make_opp" className="form_button">
                 <input type="submit" value="Создать запись"/>
