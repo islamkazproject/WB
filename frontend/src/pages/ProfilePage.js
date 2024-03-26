@@ -5,6 +5,7 @@ import axios from "axios";
 const handleLogout = () => {
     alert("Successfully logged out!");
     localStorage.removeItem('token');
+    localStorage.removeItem('userInfo');
     window.location.href = "http://localhost:3000/api/v1/";
 };
 

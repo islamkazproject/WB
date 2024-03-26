@@ -76,7 +76,7 @@ const Appointment = () => {
             setServices(servicesResponse.data);
             // setIsLoading(false);
             console.log(servicesResponse.data[0]);
-            setSelectedService(servicesResponse.data[0].service_name); // обратитесь напрямую к servicesResponse.data
+            setSelectedService(servicesResponse.data[0].id); // обратитесь напрямую к servicesResponse.data
 
         } catch (error) {
             console.error('Error fetching services:', error);
@@ -94,6 +94,7 @@ const Appointment = () => {
 
     const handleDoctorChange = async (doctorId) => {
         console.log(doctorId)
+        const username = doctorId.split(" ")[0]
         setSelectedDoctor(doctorId);
         setSelectedDate(''); // Сброс выбранной даты
         setSelectedTime(''); // Добавляем сброс выбранного времени
@@ -114,6 +115,7 @@ const Appointment = () => {
             if (selectedId != null) {
                 const selectedIdString = selectedId.toString();
                 var select = services.find(service => service.id.toString() === selectedIdString);
+                console.log("Selected service" + select);
                 setSelectedService(select);
                 return select;
             }
@@ -156,23 +158,25 @@ const Appointment = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 
         const data = {
-            service: selectedService,
-            doctor: selectedDoctor,
-            date: selectedDate,
-            time: selectedTime
+            appointment_description: "string",
+            appointment_status: "P",
+            appointment_service: selectedService,
+            appointment_patient: userInfo.userData.id,
+            appointment_schedule: parseInt(selectedDate)
         };
 
         try {
-            console.log(data);
-            const response = await axios.post('http://your-api-endpoint', data, {
+            console.log((data));
+            const response = await axios.post('http://0.0.0.0:8080/api/v1/appointments/', data, {
                 headers: {
                     'Authorization': `Token ${localStorage.getItem('token')}`
                 }
             });
 
-            //console.log('Данные успешно отправлены на сервер:', response.data);
+            console.log('Данные успешно отправлены на сервер:', response.data);
 
         } catch (error) {
             console.error('Ошибка при отправке данных на сервер:', error);
