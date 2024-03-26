@@ -33,8 +33,7 @@ const Services = () => {
                     <div key={service.id} className="card hover:shadow-md transition-all">
                         <Link to={`/api/v1/service/?id=${service.id}`}>
                             <button>
-                                <img src={(require('../../images/' + (service.service_image).split('/').slice(-2).join('/')))} alt={service.service_name}/>
-                                <div className="card-body p-4 flex flex-col justify-between">
+                                 <div className="card-body p-4 flex flex-col justify-between">
                                     <h3 className="service-name mt-2"
                                         style={{color: '#000'}}>{service.service_name}</h3>
                                 </div>

@@ -75,12 +75,15 @@ const LoginPage = () => {
         loginUser(formData, (token) => {
             getUserData(token);
             const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-            if (userInfo.desiredUser.role === 'patient'){
+            if (userInfo.desiredUser.role === 'patient' || "admin"){
+                console.log("Попал")
                 window.location.href = 'http://localhost:3000/api/v1/';
             }
             else if(userInfo.desiredUser.role === 'doctor'){
                 window.location.href = 'http://localhost:3000/api/v1/doctor';
-
+            }
+            else if(userInfo.desiredUser.role === 'registrar'){
+                window.location.href = 'http://localhost:3000/api/v1/registrar';
             }
         });
     };

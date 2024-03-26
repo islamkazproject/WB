@@ -1,37 +1,48 @@
-import React from "react";
-import Services from "../Services/Services";
+import React, {useMemo} from "react";
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const Records = () => {
+    const [appointments, setAppointments] = useState([]);
+    const userInfo = useMemo(() => JSON.parse(localStorage.getItem('userInfo')), [])
+
+    useEffect(() => {
+        const fetchAppointmentDoctor = async () => {
+            try {
+                const response = await axios.get(`http://localhost:8080/api/v1/appointments/doctors/${userInfo.userData.id}`, {
+                    headers: {
+                        'Authorization': `Token ${localStorage.getItem('token')}`
+                    }
+                });
+                setAppointments(response.data);
+            } catch (error) {
+                console.error('Error fetching appointments for doctor:', error);
+            }
+        };
+        fetchAppointmentDoctor();
+    }, [])
+
+
+console.log(appointments)
     return (
         <div>
             <section className="records" style={{ overflowY: 'scroll', maxHeight: '600px' }}>
                 <h3>Записи на прием</h3>
                 <ul>
-                    <li>
-                        <p>10:00</p>
-                        <p>Иванов Иван Иванович</p>
-                        <p>+7 (900) 123-45-67</p>
-                        <p className="status open">Открыта</p>
-                        <button className="close-btn">Закрыть запись</button>
-                    </li>
-                    <li>
-                        <p>11:00</p>
-                        <p>Петрова Мария Сергеевна</p>
-                        <p>+7 (910) 234-56-78</p>
-                        <p className="status open">Открыта</p>
-                        <button className="close-btn">Закрыть запись</button>
-                    </li>
-                    <li>
-                        <p>12:00</p>
-                        <p>Сидоров Алексей Петрович</p>
-                        <p>+7 (920) 345-67-89</p>
-                        <p className="status closed">Закрыта</p>
-                    </li>
+                    {appointments.map(appointment => (
+                        <li key={appointment.id}>
+                            <p>Пациент: {appointment.appointment_patient}</p>
+                            <p>Описание: {appointment.appointment_description}</p>
+                            <p>Услуга:{appointment.appointment_service}</p>
+                            <p>Статус: {appointment.appointment_status}</p>
+                            <p>Дата и время записи: {appointment.schedule_details.date} {appointment.schedule_details.time_slot}</p>
+                            <button className="close-btn">Закрыть запись</button>
+                        </li>
+                    ))}
                 </ul>
             </section>
         </div>
-
-    )
+    );
 };
 
 
