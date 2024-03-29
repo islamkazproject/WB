@@ -5,12 +5,13 @@ from django.utils.translation import gettext_lazy as _
 
 
 class Service(models.Model):
-    service_name = models.CharField(max_length=100)
-    service_description = models.TextField()
-    service_image = models.ImageField(upload_to="services", blank=True)
+    service_name = models.CharField(max_length=100, verbose_name="Service Name")
+    service_description = models.TextField(verbose_name="Service Description")
+    service_image = models.ImageField(upload_to="services", blank=True, verbose_name="Service Image")
     service_price = models.DecimalField(default=0,
                                         max_digits=10,
-                                        decimal_places=2)
+                                        decimal_places=2,
+                                        verbose_name="Service Price")
 
     def __str__(self):
         return f"{self.service_name}: {self.service_price} рублей"
@@ -24,12 +25,12 @@ class UserProfile(models.Model):
         ADMIN = "admin"
 
     user = models.OneToOneField(
-        User, on_delete=models.CASCADE, verbose_name="user", related_name="profile"
+        User, on_delete=models.CASCADE, verbose_name="User", related_name="profile"
     )
-    user_patronymic = models.CharField(max_length=60, blank=True, null=True)
-    user_birth_date = models.DateField(null=True, blank=True)
+    user_patronymic = models.CharField(max_length=60, blank=True, null=True, verbose_name="User Patronymic")
+    user_birth_date = models.DateField(null=True, blank=True, verbose_name="User Birth Date")
     role = models.CharField(
-        max_length=20, choices=UserRoleChoices, default=UserRoleChoices.PATIENT
+        max_length=20, choices=UserRoleChoices, default=UserRoleChoices.PATIENT, verbose_name="Role"
     )
 
     @property
@@ -48,13 +49,14 @@ class Review(models.Model):
         FOUR = 4
         FIVE = 5
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="User")
     text = models.TextField(verbose_name="Text")
     rating = models.IntegerField(
         choices=RatingEnum.choices,
         default=RatingEnum.FIVE,
+        verbose_name="Rating",
     )
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created at")
 
     def __str__(self):
         return f"{self.user} - {str(self.rating)}"
@@ -77,10 +79,10 @@ class Schedule(models.Model):
         _17_00 = 1700, _("17:00 - 18:00")
         _18_00 = 1800, _("18:00 - 19:00")
 
-    doctor = models.ForeignKey(User, on_delete=models.CASCADE, related_name="doctors")
-    date = models.DateField(default=timezone.now)
-    time_slot = models.IntegerField(choices=TimeSlots.choices, verbose_name="time_slot")
-    is_available = models.BooleanField(default=True)
+    doctor = models.ForeignKey(User, on_delete=models.CASCADE, related_name="doctors", verbose_name="Doctor")
+    date = models.DateField(default=timezone.now, verbose_name="Date")
+    time_slot = models.IntegerField(choices=TimeSlots.choices, verbose_name="Time Slot")
+    is_available = models.BooleanField(default=True, verbose_name="Is Available")
 
     def __str__(self):
         return f"{self.doctor} - {self.date} - {self.time_slot}"
@@ -94,18 +96,22 @@ class Appointment(models.Model):
         DONE = "D", _("ВЫПОЛНЕНО")
 
     appointment_patient = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="patients"
+        User, on_delete=models.CASCADE, verbose_name="Patient", related_name="patients"
     )
-    appointment_created_timestamp = models.DateTimeField(auto_now_add=True)
-    appointment_service = models.ForeignKey(Service, on_delete=models.CASCADE)
+    appointment_created_timestamp = models.DateTimeField(auto_now_add=True, verbose_name="Created Timestamp")
+    appointment_service = models.ForeignKey(Service, on_delete=models.CASCADE, verbose_name="Service")
     appointment_description = models.TextField(
-        max_length=3000, verbose_name="Description"
+        max_length=3000, verbose_name="Description", blank=True
     )
-    appointment_schedule = models.ForeignKey(
-        Schedule, on_delete=models.CASCADE, related_name="schedules"
+    appointment_schedule = models.OneToOneField(
+        Schedule,
+        on_delete=models.CASCADE,
+        verbose_name="Schedule",
+        related_name="schedules"
     )
     appointment_status = models.CharField(
         max_length=1,
+        verbose_name="Status",
         choices=StatusEnum.choices,
         default=StatusEnum.PENDING,
     )

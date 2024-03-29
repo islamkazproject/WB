@@ -1,5 +1,6 @@
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import mixins, viewsets
+from rest_framework import mixins, viewsets, status
+from rest_framework.response import Response
 from rest_framework.filters import SearchFilter
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.viewsets import GenericViewSet
@@ -133,6 +134,21 @@ class AppointmentDoctorViewSet(
             appointment_schedule__doctor__id=doctor_id,
         )
         return queryset
+
+    def partial_update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+
+        # Ограничиваем доступные поля для обновления только статусом
+        allowed_fields = ['appointment_description', 'appointment_status', 'appointment_is_available']
+        for field in request.data.keys():
+            if field not in allowed_fields:
+                return Response({"error": f"You can only update {', '.join(allowed_fields)} field(s)."},
+                                status=status.HTTP_400_BAD_REQUEST)
+
+        serializer.save()
+        return Response(serializer.data)
 
 
 class AppointmentRegistrarViewSet(

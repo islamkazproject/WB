@@ -156,3 +156,9 @@ INTERNAL_IPS = [
     "localhost",
     "0.0.0.0",
 ]
+
+DJOSER = {
+    'SERIALIZERS': {
+        'user': 'backend.serializers.CustomUserSerializer',
+    }
+}
