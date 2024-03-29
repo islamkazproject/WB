@@ -13,14 +13,21 @@ const Records = () => {
     useEffect(() => {
         const fetchAppointmentDoctor = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/api/v1/appointments/doctors/${userInfo.userData.id}`, {
+                let endpoint = '';
+                if (userInfo.desiredUser.role === 'Doctor') {
+                    endpoint = `http://localhost:8080/api/v1/appointments/doctors/${userInfo.userData.id}`;
+                } else if (userInfo.desiredUser.role === 'Registrar') {
+                    endpoint = `http://localhost:8080/api/v1/appointments-registrars/`;
+                }
+
+                const response = await axios.get(endpoint, {
                     headers: {
                         'Authorization': `Token ${localStorage.getItem('token')}`
                     }
                 });
                 setAppointments(response.data);
             } catch (error) {
-                console.error('Error fetching appointments for doctor:', error);
+                console.error('Error fetching appointments:', error);
             }
         };
         fetchAppointmentDoctor();
@@ -57,7 +64,15 @@ const Records = () => {
         });
 
         setAppointmentList(updatedAppointments);
-        updateStatusOnServer(id, 'D');
+
+        let status = ''; // Переменная для хранения статуса
+        if (userInfo.desiredUser.role === 'Doctor') {
+            status = 'D'; // Устанавливаем статус 'D' для врача
+        } else if (userInfo.desiredUser.role === 'Registrar') {
+            status = 'A'; // Устанавливаем статус 'A' для регистратора
+        }
+
+        updateStatusOnServer(id, status);
     };
 
     const updateStatusOnServer = async (id, newStatus) => {

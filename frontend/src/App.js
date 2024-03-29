@@ -24,7 +24,7 @@ function App() {
                 <Route path={`${url}/sing_in`} element={<RegistrationForm />} />
                 <Route path={`${url}/service`} element={<Appointment />} />
                 <Route path={`${url}/profile`} element={<ProfilePage />} />
-                <Route path={`${url}/registration`} element={<Registrator />} />
+                <Route path={`${url}/registrar`} element={<Registrator />} />
             </Routes>
         </Router>
     );
