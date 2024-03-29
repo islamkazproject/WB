@@ -17,6 +17,7 @@ from .serializers import (
     SchedulesSerializer,
     ServicesSerializer,
     UserProfileSerializer,
+    AppointmentRegistrarSerializer,
 )
 
 
@@ -161,7 +162,7 @@ class AppointmentRegistrarViewSet(
     Получить все записи со статусом PENDING(для регистраров)
     """
 
-    serializer_class = AppointmentSerializer
+    serializer_class = AppointmentRegistrarSerializer
     permission_classes = [IsRegistrar]
     filter_backends = [DjangoFilterBackend]
 

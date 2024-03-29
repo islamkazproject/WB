@@ -104,6 +104,30 @@ class AppointmentHistorySerializer(serializers.ModelSerializer):
 
 class AppointmentHistoryDoctorSerializer(serializers.ModelSerializer):
     appointment_patient = CustomUserSerializer()
+    appointment_service = ServicesSerializer()
+    appointment_schedule = serializers.PrimaryKeyRelatedField(
+        queryset=Schedule.objects.all()
+    )
+    schedule_details = SchedulesSerializer(
+        source="appointment_schedule", read_only=True
+    )
+
+    class Meta:
+        model = Appointment
+        fields = [
+            "id",
+            "appointment_patient",
+            "appointment_schedule",
+            "schedule_details",
+            "appointment_service",
+            "appointment_description",
+            "appointment_status",
+        ]
+
+
+class AppointmentRegistrarSerializer(serializers.ModelSerializer):
+    appointment_patient = CustomUserSerializer()
+    appointment_service = ServicesSerializer()
     appointment_schedule = serializers.PrimaryKeyRelatedField(
         queryset=Schedule.objects.all()
     )
