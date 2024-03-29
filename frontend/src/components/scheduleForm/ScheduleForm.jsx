@@ -1,99 +1,131 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const doctors = ['Доктор 1', 'Доктор 2', 'Доктор 3']; // Список врачей
-
 const ScheduleForm = () => {
-    const [doctorName, setDoctorName] = useState('');
-    const [date, setDate] = useState('');
-    const [startTime, setStartTime] = useState('');
-    const [endTime, setEndTime] = useState('');
+    const [selectedDoctorName, setSelectDoctorName] = useState('');
+    const [doctorNames, setDoctorNames] = useState([]);
+    const [selectedDate, setSelectDate] = useState(new Date());
+    const [selectedStartTime, setSelectStartTime] = useState('');
+
+    const timeSlots = ['09:00-10:00', '10:00-11:00', '11:00-12:00', '12:00-13:00', '14:00-15:00', '16:00-17:00']; // Example time slots
+
+    useEffect(() => {
+        const fetchDoctorNames = async () => {
+            try {
+                const doctorsResponse = await axios.get('http://localhost:8080/api/v1/doctors/', {
+                    headers: {
+                        Authorization: `Token ${localStorage.getItem('token')}`
+                    }
+                });
+                setDoctorNames(doctorsResponse.data);
+            } catch (error) {
+                console.error('Error fetching doctors:', error);
+            }
+        };
+
+        fetchDoctorNames();
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log("selectedDate.toISOString().substring(0, 10)" - selectedDate.toISOString().substring(0, 10));        const formData = {
+            date:selectedDate.toISOString().substring(0, 10),
+            time_slot: timeRangeToMinutes(selectedStartTime),
+            is_available: true,
+            doctor:selectedDoctorName,
 
-        // Подготовка данных для отправки на сервер
-        const formData = {
-            doctorName,
-            date,
-            startTime,
-            endTime,
         };
+        console.log(formData);
 
         try {
-            // Отправка POST запроса на сервер
-            const response = await axios.post('http://example.com/api/schedule', formData);
-
-            // Обработка успешного ответа от сервера
+            const response = await axios.post('http://localhost:8080/api/v1/schedules/', formData, {
+                headers: {
+                    'Authorization': `Token ${localStorage.getItem('token')}`
+                }
+            });
             console.log('Расписание успешно установлен:', response.data);
 
-            // Очистка формы после отправки данных
-            setDoctorName('');
-            setDate('');
-            setStartTime('');
-            setEndTime('');
+            setSelectDoctorName('');
+            setSelectDate(new Date());
+            setSelectStartTime('');
         } catch (error) {
-            // Обработка ошибки при отправке запроса
             console.error('Произошла ошибка при установке расписания:', error.message);
         }
     };
 
-    const handleDoctorChange = (selectedDoctor) => {
-        setDoctorName(selectedDoctor);
-        // Здесь можно добавить логику для отправки запроса на сервер при изменении выбранного врача
+    const handleDoctorChange = async (selectedDoctor) => {
+        setSelectDoctorName(selectedDoctor);
     };
 
-    const handleDateChange = (selectedDate) => {
-        setDate(selectedDate);
-        // Здесь можно добавить логику для отправки запроса на сервер при изменении выбранной даты
+    const handleDateChange = (newDate) => {
+        setSelectDate(newDate);
     };
 
-    const handleStartTimeChange = (selectedStartTime) => {
-        setStartTime(selectedStartTime);
-        // Здесь можно добавить логику для отправки запроса на сервер при изменении выбранного времени начала
+    const handleStartTimeChange = (newStartTime) => {
+        setSelectStartTime(newStartTime); // Просто сохраняем выбранное время без преобразований
     };
 
-    const handleEndTimeChange = (selectedEndTime) => {
-        setEndTime(selectedEndTime);
-        // Здесь можно добавить логику для отправки запроса на сервер при изменении выбранного времени окончания
+    const timeRangeToMinutes = (timeRange) => {
+        const [startTime, endTime] = timeRange.split('-');
+
+        const convertToNumber = (timeString) => {
+            const [hours, minutes] = timeString.split(':');
+            return parseInt(hours);
+        };
+
+        const startTimeInMinutes = convertToNumber(startTime);
+
+        return startTimeInMinutes * 100;
     };
 
     return (
         <div style={{ border: '1px solid #ccc', padding: '20px', borderRadius: '5px', maxWidth: '400px', margin: '0 auto' }}>
-            <formo onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit}>
                 <label style={{maxWidth: '400px', margin: '0 auto'}}>
                     <h4>Имя врача:</h4>
-                    <select style={{width: '100%'}} value={doctorName}
-                            onChange={(e) => handleDoctorChange(e.target.value)}>
-                        <option value="doctor1">Доктор 1</option>
-                        <option value="doctor2">Доктор 2</option>
-                        {/* Добавьте другие варианты врачей по мере необходимости */}
+                    <select
+                        style={{width: '100%'}}
+                        value={selectedDoctorName}
+                        onChange={(e) => handleDoctorChange(e.target.value)}
+                    >
+                        <option value="">Выберите врача</option>
+                        {doctorNames.map((doctor) => (
+                            <option key={doctor.user} value={doctor.user}>
+                                {doctor.user_details.username + ' ' + doctor.user_patronymic}
+                            </option>
+                        ))}
                     </select>
                 </label><br/>
 
                 <label>
                     <h4>Дата:</h4>
-                    <select style={{width: '100%'}} value={date} onChange={(e) => handleDateChange(e.target.value)}>
-                        <option value="2024-03-10">10 марта 2024</option>
-                        <option value="2024-03-11">11 марта 2024</option>
-                        {/* Добавьте другие доступные даты по мере необходимости */}
-                    </select>
+                    <input
+                        type="date"
+                        value={selectedDate.toISOString().substring(0, 10)} // Set the value to formatted string
+                        onChange={handleDateChange}
+                    />
                 </label><br/>
 
                 <label>
                     <h4>Время начала:</h4>
-                    <select style={{width: '100%'}} value={startTime}
-                            onChange={(e) => handleStartTimeChange(e.target.value)}>
-                        <option value="09:00">09:00</option>
-                        <option value="10:00">10:00</option>
-                        {/* Добавьте другие доступные времена начала по мере необходимости */}
+                    <select
+                        style={{width: '100%'}}
+                        value={selectedStartTime}
+                        onChange={(e) => handleStartTimeChange(e.target.value)}
+                    >
+                        <option value="">Выберите время</option>
+                        {timeSlots.map((timeSlot) => (
+                            <option key={timeSlot} value={timeSlot}>
+                                {timeSlot}
+                            </option>
+                        ))}
                     </select>
                 </label><br/>
+
                 <button type="submit">Установить расписание</button>
-            </formo>
+            </form>
         </div>
     );
 };
-
 
 export default ScheduleForm;
