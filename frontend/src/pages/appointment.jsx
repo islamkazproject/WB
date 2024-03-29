@@ -138,7 +138,7 @@ const Appointment = () => {
 
     const printDates = (doctorId) => {
         try {
-            const date = dates.find(date => date.id === doctorId); // Замените на поиск по свойству "doctor"
+            const date = dates.find(date => date.id === doctorId);
             return date ? date.date : '';
         } catch (error) {
             console.error('Error fetching dates:', error);
@@ -149,7 +149,7 @@ const Appointment = () => {
     const printTimes = (doctorId) => {
         try {
             const date = dates.find(date => date.id === doctorId);
-            return date ? date.time_slot_str : '';
+            return date ? date.time_slot : '';
         } catch (error) {
             console.error('Error fetching time data:', error);
             return '';
