@@ -60,7 +60,7 @@ const RegistrationForm = () => {
 
             const id = meResponse.data.id;
 
-            const updateUser = await axios.get(`http://localhost:8080/api/v1/auth/users/${id}/`,{
+            const updateUser = await axios.patch(`http://localhost:8080/api/v1/auth/users/${id}/`,{
                 email: formData.email,
                     firstName: formData.firstName,
                     lastName: formData.lastName,
