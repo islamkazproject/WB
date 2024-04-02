@@ -96,13 +96,14 @@ const Records = () => {
                 <ul>
                     {appointments.map(appointment => (
                         <li key={appointment.id}>
-                            <p>Пациент: {appointment.appointment_patient.last_name} {appointment.appointment_patient.first_name} {appointment.appointment_patient.patronymic}</p>
+                            <p>Пациент: {appointment.appointment_patient.username}</p>
                             <p>История болезней: {appointment.appointment_description}</p>
                             <p>Ввести: </p>
                             <div>
                                 <textarea value={appointmentDescription} onChange={handleDescriptionChange} />
                                 <button className="save-btn" onClick={() => saveAppointmentDescription(appointment.id)}>Сохранить</button>
                             </div>
+                            <p>Врач: {appointment.schedule_details.doctor.last_name} {appointment.schedule_details.doctor.first_name} {appointment.schedule_details.doctor.patronymic} </p>
                             <p>Назвние услуги: {appointment.appointment_service.service_name}</p>
                             <p>Описание услуги: {appointment.appointment_service.service_description}</p>
                             <p>Прайс: {appointment.appointment_service.service_price} руб.</p>
