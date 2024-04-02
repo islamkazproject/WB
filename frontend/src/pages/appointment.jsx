@@ -180,10 +180,12 @@ const Appointment = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+        console.log(selectedTime);
+        console.log(dates);
 
         const data = {
             appointment_patient: userInfo.userData.id,
-            appointment_schedule: parseInt(selectedDate),
+            appointment_schedule: selectedTime,
             appointment_service: selectedService,
             appointment_description: "string",
             appointment_status: "P"
@@ -231,7 +233,8 @@ const Appointment = () => {
                 ))}
             </select>><br/>
             <label htmlFor="select3">Выберите время приема:</label><br/>
-            <select id="select3" value={selectedTime} onChange={(e) => setSelectedTime(e.target.value)}>
+            <select id="select3" value={selectedTime} onChange={(e) =>
+                setSelectedTime(e.target.value)}>
                 <option value=""></option>
                 {times.map(date => (
                     <option key={date.id} value={date.id}>{printTimes(date.id)}</option>
