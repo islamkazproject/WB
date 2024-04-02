@@ -32,7 +32,7 @@ const Appointment = () => {
                 }
             });
             setDoctors(doctorsResponse.data);
-            console.log("doctors = " + (doctorsResponse.data[0]));
+            //console.log("doctors = " + (doctorsResponse.data[0]));
 
             const dataArray = doctorsResponse.data.map(async (doctor) => {
                 try {
@@ -42,7 +42,7 @@ const Appointment = () => {
                         }
                     });
 
-                    console.log("doctor id = "+ doctor.user)
+                    //console.log("doctor id = "+ doctor.user)
                     return datesResponse.data;
                 } catch (error) {
                     console.error('Error fetching user data:', error);
@@ -50,7 +50,7 @@ const Appointment = () => {
                 }
             });
 
-            console.log("dates = "+ JSON.stringify(dataArray))
+            //console.log("dates = "+ JSON.stringify(dataArray))
 
             Promise.all(dataArray).then((resolvedDates) => {
                 const actualDates = resolvedDates.reduce((acc, dates) => acc.concat(dates), []);
@@ -89,7 +89,7 @@ const Appointment = () => {
             const servicesResponse = await axios.get('http://0.0.0.0:8080/api/v1/services/');
             setServices(servicesResponse.data);
             // setIsLoading(false);
-            console.log(servicesResponse.data[0]);
+            //console.log(servicesResponse.data[0]);
             setSelectedService(servicesResponse.data[0].id); // обратитесь напрямую к servicesResponse.data
 
         } catch (error) {
@@ -107,7 +107,7 @@ const Appointment = () => {
     };
 
     const handleDoctorChange = async (doctorId) => {
-        console.log(doctorId)
+        //console.log(doctorId)
         const username = doctorId.split(" ")[0]
         setSelectedDoctor(doctorId);
         setSelectedDate(''); // Сброс выбранной даты
@@ -116,18 +116,18 @@ const Appointment = () => {
             const newDates = await fetchDatesToDoctor(doctorId); // Загрузка дат для конкретного доктора
             setDates(newDates);
         }
-        console.log('dates = ' + dates[0].date);
+        //console.log('dates = ' + dates[0].date);
     };
 
     const handleDateChange = (date) => {
-        console.log("Selected date = "+date)
-        console.log("Dates = "+ JSON.stringify(dates))
+        //console.log("Selected date = "+date)
+        //console.log("Dates = "+ JSON.stringify(dates))
         debugger;
         setSelectedDate(date);
         setSelectedTime('');
         const times =  dates.filter(thisDate => thisDate.date === date);
         setTimes(times);
-        console.log("setTimes = " + JSON.stringify(times))
+        //console.log("setTimes = " + JSON.stringify(times))
     };
 
     const handleSelectService = (url, services) => {
@@ -136,18 +136,18 @@ const Appointment = () => {
             if (selectedId != null) {
                 const selectedIdString = selectedId.toString();
                 var select = services.find(service => service.id.toString() === selectedIdString);
-                console.log("Selected service" + select);
+                //console.log("Selected service" + select);
                 setSelectedService(select);
                 return select;
             }
         } else {
             setSelectedService(services[0]);
-            console.log("setSelectedService = " + services[0]);
+            //console.log("setSelectedService = " + services[0]);
             return services[0]; // Выбрать первую услугу по умолчанию, если URL пуст
         }
     };
 
-    const printFullName = (doctorId) => {
+    const printFullName = (doctorId) =>  {
         try {
             const  user = doctors.find(user => user.id === doctorId);
             return user.user_details.username + ' ' + user.user_patronymic;
@@ -180,8 +180,8 @@ const Appointment = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-        console.log(selectedTime);
-        console.log(dates);
+        //console.log(selectedTime);
+        //console.log(dates);
 
         const data = {
             appointment_patient: userInfo.userData.id,
@@ -199,7 +199,12 @@ const Appointment = () => {
                 }
             });
 
-            console.log('Данные успешно отправлены на сервер:', response.data);
+            //console.log('Данные успешно отправлены на сервер:', response.data);
+
+            alert('Запись успешно создана!');
+            setTimeout(() => {
+                window.location.href = 'http://localhost:3000/api/v1/';
+                }, 500);
 
         } catch (error) {
             console.error('Ошибка при отправке данных на сервер:', error);
