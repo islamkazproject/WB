@@ -116,14 +116,18 @@ const Appointment = () => {
             const newDates = await fetchDatesToDoctor(doctorId); // Загрузка дат для конкретного доктора
             setDates(newDates);
         }
-        console.log('dates = ' + dates);
+        console.log('dates = ' + dates[0].date);
     };
 
     const handleDateChange = (date) => {
         console.log("Selected date = "+date)
+        console.log("Dates = "+ JSON.stringify(dates))
         debugger;
         setSelectedDate(date);
-        setSelectedTime(''); // Reset selected time when a new date is chosen
+        setSelectedTime('');
+        const times =  dates.filter(thisDate => thisDate.date === date);
+        setTimes(times);
+        console.log("setTimes = " + JSON.stringify(times))
     };
 
     const handleSelectService = (url, services) => {
@@ -223,13 +227,13 @@ const Appointment = () => {
             <select id="select2" value={selectedDate} onChange={(e) => handleDateChange(e.target.value)}>
                 <option value=""></option>
                 {dates.map(date => (
-                    <option key={date.id} value={date.id}>{printDates(date.id)}</option>
+                    <option key={date.id} value={date.date}>{printDates(date.id)}</option>
                 ))}
             </select>><br/>
             <label htmlFor="select3">Выберите время приема:</label><br/>
             <select id="select3" value={selectedTime} onChange={(e) => setSelectedTime(e.target.value)}>
                 <option value=""></option>
-                {dates.map(date => (
+                {times.map(date => (
                     <option key={date.id} value={date.id}>{printTimes(date.id)}</option>
                 ))}
             </select><br/><br/>
