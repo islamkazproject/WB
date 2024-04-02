@@ -62,6 +62,20 @@ const Appointment = () => {
         }
     };
 
+    const fetchDatesToDoctor = async (doctorId) => {
+        try {
+            const datesResponse = await axios.get(`http://0.0.0.0:8080/api/v1/schedules/doctors/${doctorId}`, {
+                headers: {
+                    'Authorization': `Token ${localStorage.getItem('token')}`
+                }
+            });
+            return datesResponse.data;
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+            return null;
+        }
+    };
+
     const fetchDates = async (doctorId) => {
         try {
             return dates.filter(date => date.doctor === doctorId);
@@ -99,12 +113,14 @@ const Appointment = () => {
         setSelectedDate(''); // Сброс выбранной даты
         setSelectedTime(''); // Добавляем сброс выбранного времени
         if (doctorId) {
-            await fetchDates(doctorId);
+            await fetchDatesToDoctor(doctorId);
         }
+        console.log('dates = ' + dates);
     };
 
     const handleDateChange = (date) => {
         console.log("Selected date = "+date)
+        debugger;
         setSelectedDate(date);
         setSelectedTime(''); // Reset selected time when a new date is chosen
     };
@@ -199,7 +215,7 @@ const Appointment = () => {
                 <option value=""></option>
                 {doctors.map(doctor => (
                     <option key={doctor.id}
-                            value={printFullName(doctor.id).id}>{printFullName(doctor.id)}</option>
+                            value={doctor.id}>{printFullName(doctor.id)}</option>
                 ))}
             </select><br/>
             <label htmlFor="select2">Выберите дату приемa:</label><br/>
