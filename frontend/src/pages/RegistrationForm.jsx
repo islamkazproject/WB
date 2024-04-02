@@ -5,7 +5,8 @@ import axios from 'axios';
 const RegistrationForm = () => {
     const [formData, setFormData] = useState({
         name: '',
-        patronymic: '',
+        firstName: '', // Replace 'name' with 'firstName'
+        lastName: '',  // Add a new field for 'lastName'
         user_birth_date: '',
         email: '',
         password: '',
@@ -56,6 +57,22 @@ const RegistrationForm = () => {
                     'Authorization': `Token ${token}`
                 }
             });
+
+            const id = meResponse.data.id;
+
+            const updateUser = await axios.get(`http://localhost:8080/api/v1/auth/users/${id}/`,{
+                email: formData.email,
+                    firstName: formData.firstName,
+                    lastName: formData.lastName,
+                    "patronymic": "string",
+                    "birth_date": formData.birthday,
+                    "role": "patient"
+            },
+                {
+                headers: {
+                    'Authorization': `Token ${token}`
+                }
+            });
             localStorage.removeItem('token');
             window.location.href = 'http://localhost:3000/api/v1/login'
 
@@ -74,22 +91,31 @@ const RegistrationForm = () => {
                 <h2>Registration</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="input-box">
-                        <input type="text" name="name" placeholder="Enter your name" onChange={handleChange} required/>
+                        <input type="text" name="name" placeholder="Enter your username" onChange={handleChange} required/>
                     </div>
                     <div className="input-box">
-                        <input type="text" name="patronymic" placeholder="Enter your patronymic" onChange={handleChange} required/>
+                        <input type="text" name="firstName" placeholder="Enter your first name" onChange={handleChange}
+                               required/>
                     </div>
                     <div className="input-box">
-                        <input type="date" name="birthday" placeholder="Enter birth day" onChange={handleChange} required/>
+                        <input type="text" name="lastName" placeholder="Enter your last name" onChange={handleChange}
+                               required/>
                     </div>
                     <div className="input-box">
-                        <input type="email" name="email" placeholder="Enter your email" onChange={handleChange} required/>
+                        <input type="date" name="birthday" placeholder="Enter birth day" onChange={handleChange}
+                               required/>
                     </div>
                     <div className="input-box">
-                        <input type="password" name="password" placeholder="Create password" onChange={handleChange} required/>
+                        <input type="email" name="email" placeholder="Enter your email" onChange={handleChange}
+                               required/>
                     </div>
                     <div className="input-box">
-                        <input type="password" name="confirmPassword" placeholder="Confirm password" onChange={handleChange} required/>
+                        <input type="password" name="password" placeholder="Create password" onChange={handleChange}
+                               required/>
+                    </div>
+                    <div className="input-box">
+                        <input type="password" name="confirmPassword" placeholder="Confirm password"
+                               onChange={handleChange} required/>
                     </div>
                     <div className="button-container">
                         <input type="submit" value="Register Now" className="custom-button"/>

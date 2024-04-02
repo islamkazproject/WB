@@ -25,6 +25,8 @@ const Records = () => {
                         'Authorization': `Token ${localStorage.getItem('token')}`
                     }
                 });
+                debugger;
+                console.log(response.data)
                 setAppointments(response.data);
             } catch (error) {
                 console.error('Error fetching appointments:', error);
@@ -66,8 +68,10 @@ const Records = () => {
         setAppointmentList(updatedAppointments);
 
         let status = ''; // Переменная для хранения статуса
+        debugger
         if (userInfo.desiredUser.role === 'Doctor') {
             status = 'D'; // Устанавливаем статус 'D' для врача
+
         } else if (userInfo.desiredUser.role === 'Registrar') {
             status = 'A'; // Устанавливаем статус 'A' для регистратора
         }
