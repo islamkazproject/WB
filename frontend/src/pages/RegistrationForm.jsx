@@ -26,6 +26,7 @@ const RegistrationForm = () => {
         }
 
         try {
+            debugger;
             // Register user
             const registerResponse = await axios.post('http://localhost:8080/api/v1/auth/users/', {
                 email: formData.email,
@@ -55,24 +56,8 @@ const RegistrationForm = () => {
                     'Authorization': `Token ${token}`
                 }
             });
-
-            const profileData = {
-                user_patronymic: formData.patronymic,
-                user_birth_date: formData.birthday,
-                role: 'patient',
-                user: meResponse.data.id
-            };
-
-            console.log(meResponse.data.id);
-
-            // Update user profile
-            const profileResponse = await axios.patch(`http://localhost:8080/api/v1/profiles/${meResponse.data.id}/`, profileData, {
-                headers: {
-                    'Authorization': `Token ${token}`
-                }
-            });
-
             localStorage.removeItem('token');
+            window.location.href = 'http://localhost:3000/api/v1/login'
 
         } catch (error) {
             if (error.response && error.response.data) {

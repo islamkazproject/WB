@@ -161,11 +161,11 @@ const Appointment = () => {
         const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 
         const data = {
-            appointment_description: "string",
-            appointment_status: "P",
-            appointment_service: selectedService,
             appointment_patient: userInfo.userData.id,
-            appointment_schedule: parseInt(selectedDate)
+            appointment_schedule: parseInt(selectedDate),
+            appointment_service: selectedService,
+            appointment_description: "string",
+            appointment_status: "P"
         };
 
         try {

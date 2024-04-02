@@ -79,10 +79,10 @@ const LoginPage = () => {
                 console.log("Попал")
                 window.location.href = 'http://localhost:3000/api/v1/';
             }
-            else if(userInfo.desiredUser.role === 'doctor'){
+            else if(userInfo.desiredUser.role === 'Doctor'){
                 window.location.href = 'http://localhost:3000/api/v1/doctor';
             }
-            else if(userInfo.desiredUser.role === 'registrar'){
+            else if(userInfo.desiredUser.role === 'Registrar'){
                 window.location.href = 'http://localhost:3000/api/v1/registrar';
             }
         });

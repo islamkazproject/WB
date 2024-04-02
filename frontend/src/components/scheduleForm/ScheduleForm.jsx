@@ -28,13 +28,14 @@ const ScheduleForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("selectedDate.toISOString().substring(0, 10)" - selectedDate.toISOString().substring(0, 10));        const formData = {
-            date:selectedDate.toISOString().substring(0, 10),
-            time_slot: timeRangeToMinutes(selectedStartTime),
-            is_available: true,
-            doctor:selectedDoctorName,
-
+        console.log(localStorage.getItem('token'));
+        const formData = {
+            doctor: 2,
+            date: "2024-04-03",
+            time_slot: "900",
+            is_available: true
         };
+
         console.log(formData);
 
         try {
@@ -101,8 +102,8 @@ const ScheduleForm = () => {
                     <h4>Дата:</h4>
                     <input
                         type="date"
-                        value={selectedDate.toISOString().substring(0, 10)} // Set the value to formatted string
-                        onChange={handleDateChange}
+                        value={selectedDate.toISOString().substring(0, 10)}
+                        onChange={(e) => handleDateChange(new Date(e.target.value))}
                     />
                 </label><br/>
 
