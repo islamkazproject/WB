@@ -11,7 +11,7 @@ class CustomUserSerializer(UserSerializer):
     role = serializers.ChoiceField(source='profile.get_role_display', choices=UserProfile.UserRoleChoices)
 
     class Meta(UserSerializer.Meta):
-        fields = ["id", "email", "first_name", "last_name", "patronymic", "birth_date", "role"]
+        fields = ["id", "username", "email", "first_name", "last_name", "patronymic", "birth_date", "role"]
 
     def to_representation(self, instance):
         request = self.context.get('request')
@@ -37,6 +37,7 @@ class ServicesSerializer(serializers.ModelSerializer):
 
 class SchedulesSerializer(serializers.ModelSerializer):
     time_slot_display = serializers.CharField(source='get_time_slot_display', read_only=True)
+    doctor = CustomUserSerializer()
 
     class Meta:
         model = Schedule
