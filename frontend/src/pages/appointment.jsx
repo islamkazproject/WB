@@ -113,7 +113,8 @@ const Appointment = () => {
         setSelectedDate(''); // Сброс выбранной даты
         setSelectedTime(''); // Добавляем сброс выбранного времени
         if (doctorId) {
-            await fetchDatesToDoctor(doctorId);
+            const newDates = await fetchDatesToDoctor(doctorId); // Загрузка дат для конкретного доктора
+            setDates(newDates);
         }
         console.log('dates = ' + dates);
     };
@@ -215,7 +216,7 @@ const Appointment = () => {
                 <option value=""></option>
                 {doctors.map(doctor => (
                     <option key={doctor.id}
-                            value={doctor.id}>{printFullName(doctor.id)}</option>
+                            value={doctor.user}>{printFullName(doctor.id)}</option>
                 ))}
             </select><br/>
             <label htmlFor="select2">Выберите дату приемa:</label><br/>
