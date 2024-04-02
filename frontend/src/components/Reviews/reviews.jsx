@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import "../../styles/Review.css";
 
@@ -12,11 +12,7 @@ const Reviews = ({ name, text, rating }) => {
         const fetchAllReviews = async () => {
             try {
                 const endpoint = `http://localhost:8080/api/v1/reviews/`;
-                const response = await axios.get(endpoint, {
-                    headers: {
-                        'Authorization': `Token ${localStorage.getItem('token')}`
-                    }
-                });
+                const response = await axios.get(endpoint);
                 setReviews(response.data);
             } catch (error) {
                 console.error('Error fetching review:', error);
