@@ -28,18 +28,18 @@ const ScheduleForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(localStorage.getItem('token'));
-        const formData = {
-            doctor: 2,
-            date: "2024-04-03",
-            time_slot: "900",
-            is_available: true
-        };
 
+        const formattedDate = selectedDate.toISOString().substring(0, 10); // YYYY-MM-DD format
+        const formData = {
+            "doctor": parseInt(selectedDoctorName),
+            "date": formattedDate,
+            "time_slot": timeRangeToMinutes(selectedStartTime),
+            "is_available": true
+        };
         console.log(formData);
 
         try {
-            const response = await axios.post('http://localhost:8080/api/v1/schedules/', formData, {
+            const response = await axios.post('http://localhost:8080/api/v1/schedules/', (formData), {
                 headers: {
                     'Authorization': `Token ${localStorage.getItem('token')}`
                 }
