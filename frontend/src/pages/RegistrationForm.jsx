@@ -60,12 +60,13 @@ const RegistrationForm = () => {
 
             const id = meResponse.data.id;
 
-            const updateUser = await axios.patch(`http://localhost:8080/api/v1/auth/users/${id}/`,{
+            const updateUser = await axios.put(`http://localhost:8080/api/v1/auth/users/${id}/`,{
+                id: id,
                 email: formData.email,
                     firstName: formData.firstName,
                     lastName: formData.lastName,
-                    "patronymic": "string",
-                    "birth_date": formData.birthday,
+                    patronymic: "string",
+                    birth_date: formData.birthday,
                     "role": "patient"
             },
                 {
@@ -82,6 +83,8 @@ const RegistrationForm = () => {
             } else {
                 alert('An unexpected error occurred: ' + error.message);
             }
+            localStorage.removeItem('token');
+
         }
     };
 

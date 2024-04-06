@@ -28,7 +28,7 @@ const ProfilePage = () => {
                 }
             });
             setAppointmentHistory(response.data);
-
+            debugger
             response.data.forEach(appointment => {
                 fetchServices(appointment.appointment_service).then(data => {
                     setServicesData(prevData => ({
@@ -57,6 +57,8 @@ const ProfilePage = () => {
                 }
             });
             return response.data;
+            debugger;
+            console.log(response.data)
         } catch (error) {
             console.error('Error fetching services:', error);
         }
@@ -93,12 +95,25 @@ const ProfilePage = () => {
                 {appointmentHistory.map((appointment, index) => {
                     const serviceData = servicesData[appointment.appointment_service] || {};
                     const dateData = datesData[appointment.appointment_schedule] || {};
+                    const descriptionData = appointment.appointment_description || {};
 
                     return (
-                        <div key={index} style={{ marginBottom: "5px", backgroundColor: "#b3b9b9", padding: "10px", borderRadius: "10px" }}>
+                        <div key={index} style={{
+                            marginBottom: "5px",
+                            backgroundColor: "#b3b9b9",
+                            padding: "10px",
+                            borderRadius: "10px"
+                        }}>
                             <p><strong>Service:</strong> {serviceData.service_name}</p>
                             <p><strong>Date:</strong> {dateData.date}</p>
                             <p><strong>Time:</strong> {dateData.time_slot}</p>
+                            <p style={{marginBottom: "0"}}><strong>Description:</strong>
+                            </p> {/* Place description at the end with no bottom margin */}
+                            <p style={{
+                                backgroundColor: "#e0e0e0",
+                                padding: "10px",
+                                borderRadius: "5px" /* Highlight description */
+                            }}>{descriptionData}</p>
                         </div>
                     );
                 })}
