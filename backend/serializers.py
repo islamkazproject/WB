@@ -37,11 +37,11 @@ class ServicesSerializer(serializers.ModelSerializer):
 
 class SchedulesSerializer(serializers.ModelSerializer):
     time_slot_display = serializers.CharField(source='get_time_slot_display', read_only=True)
-    doctor = CustomUserSerializer()
+    doctor_details = CustomUserSerializer(source='doctor', read_only=True)
 
     class Meta:
         model = Schedule
-        fields = ["id", "doctor", "date", "time_slot", "time_slot_display", "is_available"]
+        fields = ["id", "doctor", "doctor_details", "date", "time_slot", "time_slot_display", "is_available"]
 
 
 class SchedulesDoctorSerializer(serializers.ModelSerializer):
