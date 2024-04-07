@@ -109,7 +109,8 @@ class AppointmentHistoryViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         queryset = Appointment.objects.filter(
-            appointment_status=Appointment.StatusEnum.DONE
+            appointment_status=Appointment.StatusEnum.DONE,
+            appointment_patient=self.kwargs.get('user_id'),
         )
         return queryset
 
