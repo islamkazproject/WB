@@ -63,8 +63,8 @@ const RegistrationForm = () => {
             const updateUser = await axios.put(`http://localhost:8080/api/v1/auth/users/${id}/`,{
                 id: id,
                 email: formData.email,
-                    firstName: formData.firstName,
-                    lastName: formData.lastName,
+                    first_name: formData.firstName,
+                    last_name: formData.lastName,
                     patronymic: "string",
                     birth_date: formData.birthday,
                     "role": "patient"
