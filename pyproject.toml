@@ -31,3 +31,15 @@ pytest-django = "^4.5"
 black = "^22.3"
 isort = "^5.10"
 flake8 = "^4.0"
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+force_grid_wrap = 0
+combine_as_imports = true
+skip_gitignore = true
+skip_glob = ["**/migrations/*", "**/settings/*"]
+
+[tool.black]
+line-length = 90
+target-version = ['py310']

@@ -13,20 +13,20 @@ class CustomUserSerializer(UserSerializer):
     class Meta(UserSerializer.Meta):
         fields = ["id", "username", "email", "first_name", "last_name", "patronymic", "birth_date", "role"]
 
-    def to_representation(self, instance):
-        request = self.context.get('request')
+    def update(self, instance, validated_data):
+        profile_data = validated_data.pop('profile', None)
+        if profile_data:
+            instance.profile.user_patronymic = profile_data.get('user_patronymic', instance.profile.user_patronymic)
+            instance.profile.user_birth_date = profile_data.get('user_birth_date', instance.profile.user_birth_date)
+            instance.profile.role = profile_data.get('role', instance.profile.role)
 
-        if request.method in ['POST', 'PATCH', 'PUT']:
-            return {
-                'id': instance.id,
-                'first_name': instance.first_name,
-                'last_name': instance.last_name,
-                'patronymic': instance.profile.user_patronymic,
-                'birth_date': instance.profile.user_birth_date,
-                'role': instance.profile.role,
-            }
+        instance.username = validated_data.get('username', instance.username)
+        instance.email = validated_data.get('email', instance.email)
+        instance.first_name = validated_data.get('first_name', instance.first_name)
+        instance.last_name = validated_data.get('last_name', instance.last_name)
 
-        return super().to_representation(instance)
+        instance.save()
+        return instance
 
 
 class ServicesSerializer(serializers.ModelSerializer):
@@ -104,7 +104,7 @@ class AppointmentHistorySerializer(serializers.ModelSerializer):
 
 
 class AppointmentHistoryDoctorSerializer(serializers.ModelSerializer):
-    appointment_patient = CustomUserSerializer()
+    appointment_patient = CustomUserSerializer(read_only=True)
     appointment_service = ServicesSerializer()
     appointment_schedule = serializers.PrimaryKeyRelatedField(
         queryset=Schedule.objects.all()
@@ -127,7 +127,7 @@ class AppointmentHistoryDoctorSerializer(serializers.ModelSerializer):
 
 
 class AppointmentRegistrarSerializer(serializers.ModelSerializer):
-    appointment_patient = CustomUserSerializer()
+    appointment_patient = CustomUserSerializer(read_only=True)
     appointment_service = ServicesSerializer()
     appointment_schedule = serializers.PrimaryKeyRelatedField(
         queryset=Schedule.objects.all()
