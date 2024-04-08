@@ -4,6 +4,7 @@ import axios from "axios";
 
 const LoginPage = () => {
     const [formData, setFormData] = useState({ password: '', username: '' });
+    const [failedAttempts, setFailedAttempts] = useState(0);
 
     const handleInputChange = (e) => {
         const { value, name } = e.target;
@@ -27,10 +28,15 @@ const LoginPage = () => {
                     console.error('Token not received in response');
                     // Handling the case where token was not received from the server
                 }
+                setFailedAttempts(0); // Сброс счетчика неудачных попыток после успеха
             })
             .catch(error => {
-                console.error('Login failed: ', error);
-                alert('Ошибка входа. Пожалуйста, проверьте ваши данные и попробуйте снова.');
+                debugger;
+                setFailedAttempts(failedAttempts + 1); // Увеличение счетчика неудачных попыток
+                if (failedAttempts >= 1) {
+                    console.error('Login failed: ', error);
+                    alert('Ошибка входа. Пожалуйста, проверьте ваши данные и попробуйте снова.');
+                }
             });
     };
 
