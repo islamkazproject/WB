@@ -30,7 +30,7 @@ const LoginPage = () => {
             })
             .catch(error => {
                 console.error('Login failed: ', error);
-                // Handling login error
+                alert('Ошибка входа. Пожалуйста, проверьте ваши данные и попробуйте снова.');
             });
     };
 
@@ -64,7 +64,7 @@ const LoginPage = () => {
             })
             .catch(error => {
                 console.error('Failed to fetch user data: ', error);
-                // Handling error while fetching user data
+                alert('Ошибка входа. Пожалуйста, проверьте ваши данные и попробуйте снова.');
             });
     };
 
