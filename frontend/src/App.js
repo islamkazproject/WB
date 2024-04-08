@@ -17,7 +17,7 @@ function App() {
     return (
         <Router>
             <Routes>
-                <Route path={`${url}/`} element={<Home />} />
+                <Route path={`/`} element={<Home />} />
                 <Route path={`${url}/login`} element={<LoginPage />} />
                 <Route path={`${url}/appointment`} element={<Home />} />
                 <Route path={`${url}/doctor`} element={<DoctorPage />} />
