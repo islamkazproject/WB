@@ -82,6 +82,9 @@ const LoginPage = () => {
             else if(userInfo.desiredUser.role === 'Registrar'){
                 window.location.href = 'http://localhost:3000/api/v1/registrar';
             }
+            else if(userInfo.desiredUser.role === 'Admin'){
+                window.location.href = 'http://localhost:8080/admin';
+            }
             else{
                  console.log("Попал")
                  window.location.href = 'http://localhost:3000/api/v1/';
